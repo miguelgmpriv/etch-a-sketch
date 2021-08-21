@@ -1,0 +1,18 @@
+:root{
+--pixelHeight: 10;
+--pixelWidth: 10;
+}
+
+.sketchBoard{
+    display: flex;
+    flex-wrap: wrap;
+    height: 300px;
+    width: 300px;
+    border: solid black;
+    
+}
+.pixel{
+    background-color: blue;
+    height: var(--pixelHeight);
+    width: var(--pixelWidth);
+}
