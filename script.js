@@ -1,3 +1,5 @@
+
+
 let pixels = [];
 let sketchBoard = document.querySelector('.sketchBoard');
 var root = document.querySelector(':root');
@@ -7,15 +9,7 @@ percent = 100 / maxPixels;
 root.style.setProperty('--pixelHeight', `${percent}%`);
 root.style.setProperty('--pixelWidth', `${percent}%`);
 
-function createBoard(){
 
-    for(let i = 0, max = Number(maxPixels); i < max; i++){
-
-        pixels[i] = document.createElement("div");
-        sketchBoard.append(pixels[i]);
-        pixels[i].classList.add("pixel");
-    }
-}
 
 function drawBoard(pix){
     if (pix === 0) return;
@@ -29,4 +23,13 @@ function drawBoard(pix){
     }
 }
 drawBoard(maxPixels);
-console.log(pixels)
+
+const pixs = document.querySelectorAll('.pixel');
+
+console.log(pixs);
+pixs.forEach(pixel => pixel.addEventListener('mouseover', test));
+
+function test(e){
+    //root.style.setProperty('--backgroundColor', 'black');
+    this.style.backgroundColor = 'black';
+}

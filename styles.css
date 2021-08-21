@@ -1,6 +1,7 @@
 :root{
 --pixelHeight: 10;
 --pixelWidth: 10;
+--backgroundColor: white;
 }
 
 .sketchBoard{
@@ -12,7 +13,11 @@
     
 }
 .pixel{
-    background-color: blue;
+    background-color: var(--backgroundColor);
     height: var(--pixelHeight);
     width: var(--pixelWidth);
+}
+
+.change{
+    background-color: black !important;
 }
