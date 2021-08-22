@@ -1,25 +1,33 @@
 var pixs = document.querySelectorAll('.pixel');
-
 let pixels = [];
 let sketchBoard = document.querySelector('.sketchBoard');
 var root = document.querySelector(':root');
 
 document.getElementById('pixelSlider').addEventListener('change', function(e){
-    setBoard(e.target.value);
+    setBoard(e.target.value); //prepares everything for drawBoard
     drawBoard(e.target.value,e.target.value);
     pixs = document.querySelectorAll('.pixel');
-    console.log(pixs);
     return pixs.forEach(pixel => pixel.addEventListener('mouseover', test));
 });
 
+document.getElementById('colorPicker').addEventListener("change", function(e){
+    root.style.setProperty('--backgroundColor', e.target.value);
+    console.log(getComputedStyle(root).getPropertyValue('--backgroundColor'))
+
+})
 function setBoard(pixChoice){
-    let percent = 100/pixChoice;
+
+    while(sketchBoard.firstChild){
+        sketchBoard.removeChild(sketchBoard.firstChild);
+    } //removes grid
+
+    let percent = 100/pixChoice; 
     root.style.setProperty('--pixelHeight', `${percent}%`);
     root.style.setProperty('--pixelWidth', `${percent}%`);
 }
 
 function drawBoard(pix, maxPixels){
-    console.log(maxPixels);
+
     if (pix === 0) return;
 
     drawBoard(pix - 1,maxPixels);
@@ -32,7 +40,7 @@ function drawBoard(pix, maxPixels){
 }
 
 function test(e){
-    console.log(e);
+    console.log(getComputedStyle(root).getPropertyValue('--backgroundColor'));
     //root.style.setProperty('--backgroundColor', 'black');
-    this.style.backgroundColor = 'black';
+    this.style.backgroundColor = getComputedStyle(root).getPropertyValue('--backgroundColor');
 }
