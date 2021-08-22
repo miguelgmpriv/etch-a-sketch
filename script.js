@@ -1,7 +1,8 @@
 var pixs = document.querySelectorAll('.pixel');
 let pixels = [];
-let sketchBoard = document.querySelector('.sketchBoard');
+let sketchBoard = document.querySelector('#sketchBoard');
 var root = document.querySelector(':root');
+
 
 document.getElementById('pixelSlider').addEventListener('change', function(e){
     setBoard(e.target.value); //prepares everything for drawBoard
@@ -14,7 +15,13 @@ document.getElementById('colorPicker').addEventListener("change", function(e){
     root.style.setProperty('--backgroundColor', e.target.value);
     console.log(getComputedStyle(root).getPropertyValue('--backgroundColor'))
 
-})
+});
+
+document.getElementById('clear').addEventListener('click',function(){
+    pixs.forEach(pixel => pixel.style.backgroundColor = 'white');
+});
+
+
 function setBoard(pixChoice){
 
     while(sketchBoard.firstChild){
@@ -40,7 +47,14 @@ function drawBoard(pix, maxPixels){
 }
 
 function test(e){
-    console.log(getComputedStyle(root).getPropertyValue('--backgroundColor'));
     //root.style.setProperty('--backgroundColor', 'black');
     this.style.backgroundColor = getComputedStyle(root).getPropertyValue('--backgroundColor');
 }
+
+window.onload = function(){
+    console.log('Hello');
+    setBoard(50);
+    drawBoard(50,50);
+    pixs = document.querySelectorAll('.pixel');
+    return pixs.forEach(pixel => pixel.addEventListener('mouseover', test));
+};

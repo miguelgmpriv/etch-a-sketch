@@ -4,7 +4,7 @@
 --backgroundColor: black;
 }
 
-.sketchBoard{
+#sketchBoard{
     display: flex;
     flex-wrap: wrap;
     height: 300px;
@@ -13,7 +13,7 @@
     
 }
 .pixel{
-    background-color: white;
+    background-color: #FFFFFF;
     height: var(--pixelHeight);
     width: var(--pixelWidth);
 }
