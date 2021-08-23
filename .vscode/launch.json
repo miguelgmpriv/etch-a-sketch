@@ -1,0 +1,100 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:8080",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}
+var pixs = document.querySelectorAll('.pixel');
+let pixels = [];
+let sketchBoard = document.querySelector('#sketchBoard');
+var root = document.querySelector(':root');
+let current
+
+document.getElementById('pixelSlider').addEventListener('change', function(e){
+    //user selected pixel size used here to start setting up the board
+    setBoard(e.target.value); 
+    drawBoard(e.target.value,e.target.value); 
+    //starts on mouseover changes
+    pixs = document.querySelectorAll('.pixel');
+    return pixs.forEach(pixel => pixel.addEventListener('mouseover', changePixel));
+});
+
+document.getElementById('colorPicker').addEventListener("change", function(e){
+    //gets the value from color input and updates css variable
+    root.style.setProperty('--backgroundColor', e.target.value);
+});
+
+document.getElementById('clear').addEventListener('click',function(){
+    //"clears" the board by changing all the pixel class background to white.
+    pixs.forEach(pixel => pixel.style.backgroundColor = 'white');
+});
+
+document.getElementById('eraser').addEventListener('click', function(e){ 
+    current = 0;
+    changePixel(e, current);   //begin "eraser" thread
+});
+
+document.getElementById('rgb').addEventListener('click', function(e){
+    current = 1;
+    
+    changePixel(e, current);
+});
+
+function setBoard(pixChoice){
+
+    while(sketchBoard.firstChild){
+        sketchBoard.removeChild(sketchBoard.firstChild);
+    } //removes grid
+
+    let percent = 100/pixChoice; // used to set up board based on percentage
+    root.style.setProperty('--pixelHeight', `${percent}%`);
+    root.style.setProperty('--pixelWidth', `${percent}%`);
+}
+
+function drawBoard(pix, maxPixels){
+    //use recursion to draw the board
+    if (pix === 0) return;
+    
+    drawBoard(pix - 1,maxPixels);
+    
+    for(let i = 0; i < maxPixels; i++){
+        pixels[i] = document.createElement("div");
+        sketchBoard.append(pixels[i]);
+        pixels[i].classList.add("pixel");
+    }
+}
+
+function changePixel(...args){
+    console.log(args[0].target.id);
+    //checks args for eraser id to enable "eraser" by changing target background to white
+    if (args[0].target.id === 'eraser'){
+        root.style.setProperty('--backgroundColor', 'white');
+        pixs.forEach(pixel => pixel.addEventListener('mouseover', changePixel));
+    } else if (args[0].target.id === 'rgb'){
+        //make a random color and update css variable        
+        pixs.forEach(pixel => pixel.addEventListener('mouseover', function(){
+        let rgb = Math.floor(Math.random()*16777215).toString(16);
+        root.style.setProperty('--backgroundColor', `#${rgb}`);
+        changePixel;
+    }));} else {
+        //if no arguments change current target background to the user set background color(or the defaul)
+        this.style.backgroundColor = getComputedStyle(root).getPropertyValue('--backgroundColor');
+    }
+}
+
+window.onload = function(){
+    //default board settings
+    setBoard(50);
+    drawBoard(50,50);
+    pixs = document.querySelectorAll('.pixel');
+    return pixs.forEach(pixel => pixel.addEventListener('mouseover', changePixel));
+};
